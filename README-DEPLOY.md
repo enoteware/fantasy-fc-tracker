@@ -51,25 +51,21 @@ git push
 
 ---
 
-## Option 3: Vercel
+## Option 3: Vercel (current)
 
+- **Repo:** [github.com/enoteware/fantasy-fc-tracker](https://github.com/enoteware/fantasy-fc-tracker) — connected to Vercel; pushes to `main` auto-deploy.
+- **Live URL:** https://fantasy-fc-tracker.vercel.app  
+  Root `/` rewrites to `/index.html`; card images at `/cards/*.webp`.
+
+**When you regenerate the tracker HTML:** copy to `index.html` so the root serves it:
 ```bash
-cd ~/code/fc_planner/fantasy-fc-tracker
-vercel --prod
+cp data/fantasy-fc-tracker.html index.html
+git add data/fantasy-fc-tracker.html index.html
+git commit -m "Update tracker: $(date)"
+git push
 ```
 
-Add to `vercel.json`:
-```json
-{
-  "cleanUrls": true,
-  "trailingSlash": false,
-  "rewrites": [
-    { "source": "/", "destination": "/data/fantasy-fc-tracker.html" }
-  ]
-}
-```
-
-**Live URL**: `https://fantasy-fc-tracker.vercel.app`
+If the live site shows a sign-in page, turn off **Vercel Deployment Protection** for Production in the project’s Settings on Vercel.
 
 ---
 
