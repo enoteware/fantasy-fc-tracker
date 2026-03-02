@@ -1,0 +1,320 @@
+#!/usr/bin/env node
+
+/**
+ * Scrape match results from SofaScore via RapidAPI
+ * Better data than FBref: includes player stats, live scores
+ */
+
+const { Pool } = require('pg');
+require('dotenv').config();
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }
+});
+
+const RAPIDAPI_KEY = process.env.RAPIDAPI_KEY || 'bedc505671mshcb53254c6d48a9bp1aa8d5jsn7eef805ce761';
+const RAPIDAPI_HOST = process.env.RAPIDAPI_HOST || 'sofascore.p.rapidapi.com';
+
+// SofaScore tournament IDs (season 2025/26)
+const TOURNAMENTS = {
+  // Men's leagues ✅ All verified 2026-02-22
+  'Premier League': { id: 17, seasonId: 76986 },
+  'La Liga': { id: 8, seasonId: 77559 },
+  'Serie A': { id: 23, seasonId: 76457 },
+  'Bundesliga': { id: 35, seasonId: 77333 },
+  'Ligue 1': { id: 34, seasonId: 77356 },
+  'Eredivisie': { id: 37, seasonId: 77012 },
+  'Primeira Liga': { id: 238, seasonId: 77806 },
+  'Süper Lig': { id: 52, seasonId: 77805 },
+  'Saudi Pro League': { id: 955, seasonId: 80443 },
+  
+  // Women's leagues ✅ All verified 2026-02-22
+  'WSL': { id: 1044, seasonId: 79227 },
+  'Liga F': { id: 1127, seasonId: 77723 },
+  'Frauen-Bundesliga': { id: 232, seasonId: 78297 },
+  'Première Ligue (Women)': { id: 1139, seasonId: 78460 }
+};
+
+async function fetchTournamentMatches(tournamentName, tournamentId, seasonId, startDate = '2026-02-21') {
+  console.log(`\n📥 Fetching ${tournamentName} matches...`);
+  
+  try {
+    const url = `https://${RAPIDAPI_HOST}/tournaments/get-matches?tournamentId=${tournamentId}&seasonId=${seasonId}&pageIndex=0`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'x-rapidapi-host': RAPIDAPI_HOST,
+        'x-rapidapi-key': RAPIDAPI_KEY
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+    }
+    
+    const data = await response.json();
+    
+    if (!data.events) {
+      console.log(`   ⚠️  No events found`);
+      return [];
+    }
+    
+    const matches = [];
+    const startTimestamp = new Date(startDate).getTime() / 1000;
+    
+    for (const event of data.events) {
+      // Only get matches from startDate onwards that are finished
+      if (event.startTimestamp < startTimestamp) continue;
+      if (event.status?.type !== 'finished') continue;
+      
+      const match = {
+        date: new Date(event.startTimestamp * 1000).toISOString().split('T')[0],
+        homeTeam: event.homeTeam?.name,
+        awayTeam: event.awayTeam?.name,
+        homeScore: event.homeScore?.current || 0,
+        awayScore: event.awayScore?.current || 0,
+        league: tournamentName,
+        sofascoreId: event.id
+      };
+      
+      matches.push(match);
+    }
+    
+    console.log(`   Found ${matches.length} completed matches`);
+    return matches;
+    
+  } catch (error) {
+    console.error(`   ❌ Error fetching ${tournamentName}:`, error.message);
+    return [];
+  }
+}
+
+async function saveMatches(matches) {
+  if (matches.length === 0) return;
+  
+  const client = await pool.connect();
+  
+  try {
+    for (const match of matches) {
+      // Home team result
+      const homeResult = match.homeScore > match.awayScore ? 'win' : 
+                        match.homeScore < match.awayScore ? 'loss' : 'draw';
+      const homeCleanSheet = match.awayScore === 0;
+      
+      await client.query(
+        `INSERT INTO fantasy_fc_matches 
+         (club, opponent, match_date, home_away, league, result, score_for, score_against, goals_scored, clean_sheet, tracked)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, true)
+         ON CONFLICT (club, match_date, opponent) DO UPDATE
+         SET result = EXCLUDED.result,
+             score_for = EXCLUDED.score_for,
+             score_against = EXCLUDED.score_against,
+             goals_scored = EXCLUDED.goals_scored,
+             clean_sheet = EXCLUDED.clean_sheet,
+             tracked = true,
+             updated_at = NOW()`,
+        [match.homeTeam, match.awayTeam, match.date, 'home', match.league, homeResult, 
+         match.homeScore, match.awayScore, match.homeScore, homeCleanSheet]
+      );
+      
+      // Away team result
+      const awayResult = match.awayScore > match.homeScore ? 'win' : 
+                        match.awayScore < match.homeScore ? 'loss' : 'draw';
+      const awayCleanSheet = match.homeScore === 0;
+      
+      await client.query(
+        `INSERT INTO fantasy_fc_matches 
+         (club, opponent, match_date, home_away, league, result, score_for, score_against, goals_scored, clean_sheet, tracked)
+         VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, true)
+         ON CONFLICT (club, match_date, opponent) DO UPDATE
+         SET result = EXCLUDED.result,
+             score_for = EXCLUDED.score_for,
+             score_against = EXCLUDED.score_against,
+             goals_scored = EXCLUDED.goals_scored,
+             clean_sheet = EXCLUDED.clean_sheet,
+             tracked = true,
+             updated_at = NOW()`,
+        [match.awayTeam, match.homeTeam, match.date, 'away', match.league, awayResult, 
+         match.awayScore, match.homeScore, match.awayScore, awayCleanSheet]
+      );
+    }
+    
+    console.log(`   ✅ Saved ${matches.length} matches`);
+    
+  } catch (error) {
+    console.error(`   ❌ Error saving matches:`, error.message);
+  } finally {
+    client.release();
+  }
+}
+
+async function fetchMatchPlayerStats(matchId) {
+  console.log(`\n📊 Fetching player stats for match ${matchId}...`);
+  
+  try {
+    const url = `https://${RAPIDAPI_HOST}/events/get-lineups?eventId=${matchId}`;
+    
+    const response = await fetch(url, {
+      headers: {
+        'x-rapidapi-host': RAPIDAPI_HOST,
+        'x-rapidapi-key': RAPIDAPI_KEY
+      }
+    });
+    
+    if (!response.ok) {
+      throw new Error(`HTTP ${response.status}`);
+    }
+    
+    const data = await response.json();
+    
+    // Extract player stats
+    const playerStats = [];
+    
+    if (data.home?.players) {
+      for (const player of data.home.players) {
+        if (player.statistics?.goals || player.statistics?.assists) {
+          playerStats.push({
+            name: player.player?.name,
+            team: data.event?.homeTeam?.name,
+            goals: player.statistics.goals || 0,
+            assists: player.statistics.assists || 0
+          });
+        }
+      }
+    }
+    
+    if (data.away?.players) {
+      for (const player of data.away.players) {
+        if (player.statistics?.goals || player.statistics?.assists) {
+          playerStats.push({
+            name: player.player?.name,
+            team: data.event?.awayTeam?.name,
+            goals: player.statistics.goals || 0,
+            assists: player.statistics.assists || 0
+          });
+        }
+      }
+    }
+    
+    console.log(`   Found ${playerStats.length} players with goals/assists`);
+    return playerStats;
+    
+  } catch (error) {
+    console.error(`   ⚠️  Could not fetch player stats:`, error.message);
+    return [];
+  }
+}
+
+async function updateClubStats() {
+  const client = await pool.connect();
+  
+  try {
+    console.log('\n🔄 Updating club stats...');
+    
+    await client.query(`
+      UPDATE fantasy_fc_club_stats cs
+      SET 
+        matches_played = (
+          SELECT COUNT(*) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true
+        ),
+        wins = (
+          SELECT COUNT(*) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true AND m.result = 'win'
+        ),
+        draws = (
+          SELECT COUNT(*) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true AND m.result = 'draw'
+        ),
+        losses = (
+          SELECT COUNT(*) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true AND m.result = 'loss'
+        ),
+        goals_scored = (
+          SELECT COALESCE(SUM(goals_scored), 0) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true
+        ),
+        goals_conceded = (
+          SELECT COALESCE(SUM(score_against), 0) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true
+        ),
+        clean_sheets = (
+          SELECT COUNT(*) FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true AND m.clean_sheet = true
+        ),
+        upgrade_6pts_earned = (
+          SELECT (wins * 3 + draws) >= 6 FROM (
+            SELECT 
+              COUNT(*) FILTER (WHERE result = 'win') as wins,
+              COUNT(*) FILTER (WHERE result = 'draw') as draws
+            FROM fantasy_fc_matches m 
+            WHERE m.club = cs.club AND m.tracked = true
+          ) x
+        ),
+        upgrade_10goals_earned = (
+          SELECT COALESCE(SUM(goals_scored), 0) >= 10 FROM fantasy_fc_matches m 
+          WHERE m.club = cs.club AND m.tracked = true
+        ),
+        updated_at = NOW()
+    `);
+    
+    // Count clubs with upgrades
+    const result = await client.query(`
+      SELECT 
+        COUNT(*) FILTER (WHERE upgrade_6pts_earned = true) as clubs_6pts,
+        COUNT(*) FILTER (WHERE upgrade_10goals_earned = true) as clubs_10goals
+      FROM fantasy_fc_club_stats
+    `);
+    
+    console.log(`   ✅ ${result.rows[0].clubs_6pts} clubs earned 6pts upgrade`);
+    console.log(`   ✅ ${result.rows[0].clubs_10goals} clubs earned 10 goals upgrade`);
+    
+  } catch (error) {
+    console.error('   ❌ Error updating club stats:', error.message);
+  } finally {
+    client.release();
+  }
+}
+
+async function main() {
+  console.log('🚀 SofaScore Match Scraper (RapidAPI)\n');
+  console.log(`📊 Rate limit: 500 requests/day`);
+  
+  const startDate = process.argv[2] || '2026-02-21';
+  console.log(`📅 Fetching matches from ${startDate}`);
+  
+  let totalMatches = 0;
+  let apiCalls = 0;
+  
+  // Fetch each tournament
+  for (const [league, config] of Object.entries(TOURNAMENTS)) {
+    const matches = await fetchTournamentMatches(league, config.id, config.seasonId, startDate);
+    totalMatches += matches.length;
+    apiCalls++;
+    
+    if (matches.length > 0) {
+      await saveMatches(matches);
+    }
+    
+    // Rate limit: 1 second between requests
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+  
+  // Update club stats
+  await updateClubStats();
+  
+  console.log(`\n📊 Summary:`);
+  console.log(`   Total matches: ${totalMatches}`);
+  console.log(`   API calls used: ${apiCalls}/${process.env.RAPIDAPI_DAILY_LIMIT || 500}`);
+  console.log(`\n✅ Scraping complete!`);
+  
+  await pool.end();
+}
+
+// Run if executed directly
+if (require.main === module) {
+  main().catch(console.error);
+}
+
+module.exports = { fetchTournamentMatches, fetchMatchPlayerStats, saveMatches, updateClubStats };

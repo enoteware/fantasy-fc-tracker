@@ -1,0 +1,36 @@
+#!/bin/bash
+
+# Fantasy FC Tracker - Update Script (with Women's suffix fix)
+
+set -e
+
+cd ~/code/fc_planner/fantasy-fc-tracker
+
+echo "⚽ Fantasy FC Tracker Update"
+echo "============================"
+echo ""
+
+# 1. Fetch latest match data from SofaScore
+echo "📥 Fetching match data from SofaScore..."
+node scripts/scrape-sofascore.js
+
+# 2. Generate update text
+echo ""
+echo "📊 Generating update..."
+node scripts/generate-update.js > data/latest-update-raw.txt
+
+# 3. Post-process: Add (W) for women's teams
+cat data/latest-update-raw.txt | \
+  sed 's/(Premier League | England,/(WSL | England (W),/' | \
+  sed 's/(Premier League | Arsenal,/(WSL | Arsenal (W),/' | \
+  sed 's/(Premier League | Chelsea,/(WSL | Chelsea (W),/' | \
+  sed 's/(Premier League | Manchester City,/(WSL | Man City (W),/' | \
+  sed 's/(Premier League | Tottenham Hotspur,/(WSL | Tottenham (W),/' | \
+  sed 's/(La Liga | FC Barcelona,/(Liga F | Barcelona (W),/' | \
+  sed 's/(Bundesliga | FC Bayern München,/(Frauen-Bundesliga | Bayern (W),/' \
+  > data/latest-update.txt
+
+echo ""
+echo "✅ Update complete!"
+echo ""
+echo "Output saved to: data/latest-update.txt"

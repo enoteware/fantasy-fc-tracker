@@ -1,0 +1,23 @@
+{
+  "name": "fantasy-fc-tracker",
+  "version": "1.0.0",
+  "description": "Automated Fantasy FC live upgrade tracker for EA FC 26",
+  "main": "scripts/generate-update.js",
+  "scripts": {
+    "seed": "node scripts/seed-players.js",
+    "scrape": "node scripts/scrape-sofascore.js",
+    "scrape:fbref": "node scripts/scrape-matches.js",
+    "update": "node scripts/generate-update.js",
+    "full": "./update.sh",
+    "scrape:futgg": "node scripts/scrape-futgg-fantasy-fc.js"
+  },
+  "dependencies": {
+    "axios": "^1.13.6",
+    "dotenv": "^16.6.1",
+    "pg": "^8.18.0",
+    "playwright": "^1.49.0",
+    "puppeteer": "^24.37.5"
+  },
+  "author": "eBot",
+  "license": "MIT"
+}

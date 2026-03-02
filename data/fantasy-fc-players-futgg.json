@@ -1,0 +1,380 @@
+[
+  {
+    "name": "Jaap Stam",
+    "club": "Netherlands",
+    "league": "Eredivisie",
+    "position": "CB",
+    "rating": 91,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/5740-jaap-stam/26-83891820/"
+  },
+  {
+    "name": "Yaya Touré",
+    "club": "Ivory Coast",
+    "league": "Premier League",
+    "position": "CDM",
+    "rating": 92,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/20289-yaya-toure/26-67129153/"
+  },
+  {
+    "name": "Víctor Ibarbo",
+    "club": "Colombia",
+    "league": "Serie A Enilive",
+    "position": "RM",
+    "rating": 91,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/204550-victor-ibarbo/26-50536198/"
+  },
+  {
+    "name": "Antonio Di Natale",
+    "club": "Italy",
+    "league": "Serie A Enilive",
+    "position": "LW",
+    "rating": 92,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/120274-antonio-di-natale/26-67229138/"
+  },
+  {
+    "name": "Gervais Yao Kouassi",
+    "club": "Ivory Coast",
+    "league": "Premier League",
+    "position": "RM",
+    "rating": 89,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/170733-gervinho/26-67279597/"
+  },
+  {
+    "name": "Jill Scott",
+    "club": "England",
+    "league": "Barclays Women’s Super League",
+    "position": "CB",
+    "rating": 89,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/227262-jill-scott/26-67336126/"
+  },
+  {
+    "name": "Saeed Al Owairan",
+    "club": "Saudi Arabia",
+    "league": "ROSHN Saudi League",
+    "position": "CAM",
+    "rating": 91,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/266694-saeed-al-owairan/26-67375558/"
+  },
+  {
+    "name": "Paulo Jorge dos Santos Futre",
+    "club": "Portugal",
+    "league": "Liga Portugal",
+    "position": "RW",
+    "rating": 90,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/214101-paulo-futre/26-67322965/"
+  },
+  {
+    "name": "Clint Dempsey",
+    "club": "United States",
+    "league": "Premier League",
+    "position": "CAM",
+    "rating": 89,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/155897-clint-dempsey/26-67264761/"
+  },
+  {
+    "name": "Tomas Brolin",
+    "club": "Sweden",
+    "league": "Premier League",
+    "position": "CAM",
+    "rating": 89,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/266695-tomas-brolin/26-50598343/"
+  },
+  {
+    "name": "Mohammed Noor",
+    "club": "Saudi Arabia",
+    "league": "ROSHN Saudi League",
+    "position": "CM",
+    "rating": 88,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/168880-mohammed-noor/26-50500528/"
+  },
+  {
+    "name": "Tomáš Rosický",
+    "club": "Czech Republic",
+    "league": "Bundesliga",
+    "position": "CM",
+    "rating": 88,
+    "isHero": true,
+    "url": "https://www.fut.gg/players/8473-tomas-rosicky/26-50340121/"
+  },
+  {
+    "name": "Rafael da Conceição Leão",
+    "club": "Milano FC",
+    "league": "Serie A Enilive",
+    "position": "LM",
+    "rating": 92,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/241721-rafael-leao/26-84127801/"
+  },
+  {
+    "name": "João Félix Sequeira",
+    "club": "Al Nassr",
+    "league": "ROSHN Saudi League",
+    "position": "LM",
+    "rating": 91,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/242444-joao-felix/26-84128524/"
+  },
+  {
+    "name": "Endrick Felipe Moreira de Sousa",
+    "club": "OL",
+    "league": "Ligue 1 McDonald's",
+    "position": "RW",
+    "rating": 91,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/272505-endrick-felipe-moreira-de-sousa-endrick/26-100935801/"
+  },
+  {
+    "name": "João Pedro Cavaco Cancelo",
+    "club": "FC Barcelona",
+    "league": "LALIGA EA SPORTS",
+    "position": "RB",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/210514-joao-cancelo/26-84096594/"
+  },
+  {
+    "name": "Cole Palmer",
+    "club": "Chelsea",
+    "league": "Premier League",
+    "position": "RM",
+    "rating": 92,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/257534-cole-palmer/26-84143614/"
+  },
+  {
+    "name": "Donyell Malen",
+    "club": "AS Roma",
+    "league": "Serie A Enilive",
+    "position": "RM",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/231447-donyell-malen/26-67340311/"
+  },
+  {
+    "name": "Romée Leuchter",
+    "club": "Paris SG",
+    "league": "Arkema Première Ligue",
+    "position": "CAM",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/267531-romee-leuchter/26-67376395/"
+  },
+  {
+    "name": "Antoine Semenyo",
+    "club": "Manchester City",
+    "league": "Premier League",
+    "position": "RM",
+    "rating": 90,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/241236-antoine-semenyo/26-100904532/"
+  },
+  {
+    "name": "Deniz Undav",
+    "club": "VfB Stuttgart",
+    "league": "Bundesliga",
+    "position": "CAM",
+    "rating": 90,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/244176-deniz-undav/26-67353040/"
+  },
+  {
+    "name": "Ben Chilwell",
+    "club": "Strasbourg",
+    "league": "Ligue 1 McDonald's",
+    "position": "LB",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/229984-ben-chilwell/26-67338848/"
+  },
+  {
+    "name": "Salma Celeste Paralluelo Ayingono",
+    "club": "FC Barcelona",
+    "league": "Liga F",
+    "position": "LM",
+    "rating": 91,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/269404-salma-paralluelo/26-67378268/"
+  },
+  {
+    "name": "Douglas Luiz Soares de Paulo",
+    "club": "Aston Villa",
+    "league": "Premier League",
+    "position": "CDM",
+    "rating": 90,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/236499-douglas-luiz/26-67345363/"
+  },
+  {
+    "name": "Bruno Miguel Borges Fernandes",
+    "club": "Man Utd",
+    "league": "Premier League",
+    "position": "CM",
+    "rating": 92,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/212198-bruno-fernandes/26-84098278/"
+  },
+  {
+    "name": "Ricardo Jorge da Luz Horta",
+    "club": "SC Braga",
+    "league": "Liga Portugal",
+    "position": "CM",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/213516-ricardo-horta/26-50545164/"
+  },
+  {
+    "name": "Unai Simón Mendibil",
+    "club": "Athletic Club",
+    "league": "LALIGA EA SPORTS",
+    "position": "GK",
+    "rating": 90,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/230869-unai-simon/26-50562517/"
+  },
+  {
+    "name": "Noa Lang",
+    "club": "Galatasaray",
+    "league": "Trendyol Süper Lig",
+    "position": "LM",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/239380-noa-lang/26-67348244/"
+  },
+  {
+    "name": "Keven Schlotterbeck",
+    "club": "FC Augsburg",
+    "league": "Bundesliga",
+    "position": "CB",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/244068-keven-schlotterbeck/26-50575716/"
+  },
+  {
+    "name": "Moussa Diaby",
+    "club": "Al Ittihad",
+    "league": "ROSHN Saudi League",
+    "position": "RM",
+    "rating": 90,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/241852-moussa-diaby/26-50573500/"
+  },
+  {
+    "name": "Giovane Santana",
+    "club": "SSC Napoli",
+    "league": "Serie A Enilive",
+    "position": "RM",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/80283-giovane-santana-giovane/26-67189147/"
+  },
+  {
+    "name": "Robert Lewandowski",
+    "club": "FC Barcelona",
+    "league": "LALIGA EA SPORTS",
+    "position": "ST",
+    "rating": 91,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/188545-robert-lewandowski/26-84074625/"
+  },
+  {
+    "name": "Aleix García Serrano",
+    "club": "Leverkusen",
+    "league": "Bundesliga",
+    "position": "CDM",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/228813-aleix-garcia/26-50560461/"
+  },
+  {
+    "name": "Tyrique George",
+    "club": "Everton",
+    "league": "Premier League",
+    "position": "RM",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/71998-tyrique-george/26-67180862/"
+  },
+  {
+    "name": "Francisco Sampaio Moura",
+    "club": "FC Porto",
+    "league": "Liga Portugal",
+    "position": "LB",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/251615-francisco-moura/26-50583263/"
+  },
+  {
+    "name": "Jørgen Strand Larsen",
+    "club": "Crystal Palace",
+    "league": "Premier League",
+    "position": "ST",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/238756-jorgen-strand-larsen/26-67347620/"
+  },
+  {
+    "name": "Matheus dos Santos Dias",
+    "club": "Nacional",
+    "league": "Liga Portugal",
+    "position": "CB",
+    "rating": 87,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/74067-matheus-dos-santos-dias-matheus-dias/26-50405715/"
+  },
+  {
+    "name": "Carolin Simon",
+    "club": "FC Bayern München",
+    "league": "Google Pixel Frauen-Bundesliga",
+    "position": "LB",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/239344-carolin-simon/26-50570992/"
+  },
+  {
+    "name": "Olivia Holdt",
+    "club": "Spurs",
+    "league": "Barclays Women’s Super League",
+    "position": "CM",
+    "rating": 87,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/273177-olivia-holdt/26-50604825/"
+  },
+  {
+    "name": "Kalidou Koulibaly",
+    "club": "Al Hilal",
+    "league": "ROSHN Saudi League",
+    "position": "CB",
+    "rating": 88,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/201024-kalidou-koulibaly/26-50532672/"
+  },
+  {
+    "name": "Steph Catley",
+    "club": "Arsenal",
+    "league": "Barclays Women’s Super League",
+    "position": "LB",
+    "rating": 89,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/227119-steph-catley/26-50558767/"
+  },
+  {
+    "name": "Mats Deijl",
+    "club": "Feyenoord",
+    "league": "Eredivisie",
+    "position": "RB",
+    "rating": 87,
+    "isHero": false,
+    "url": "https://www.fut.gg/players/262790-mats-deijl/26-67371654/"
+  }
+]

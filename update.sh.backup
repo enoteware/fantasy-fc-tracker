@@ -1,0 +1,37 @@
+#!/bin/bash
+
+# Fantasy FC Tracker Update Script
+# Scrapes matches and generates update
+
+set -e
+
+cd "$(dirname "$0")"
+
+echo "🚀 Fantasy FC Tracker Update"
+echo "=========================="
+echo ""
+
+# Load environment
+if [ -f .env ]; then
+  set -a
+  source .env
+  set +a
+fi
+
+# Scrape matches (try SofaScore first, fallback to FBref)
+echo "📥 Step 1: Scraping match results..."
+if node scripts/scrape-sofascore.js; then
+  echo "   ✅ SofaScore data retrieved"
+else
+  echo "   ⚠️  SofaScore failed, falling back to FBref..."
+  node scripts/scrape-matches.js
+fi
+
+echo ""
+echo "📊 Step 2: Generating update..."
+node scripts/generate-update.js > data/latest-update.txt
+
+echo ""
+echo "✅ Update complete!"
+echo ""
+echo "Output saved to: data/latest-update.txt"
