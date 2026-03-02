@@ -4,7 +4,6 @@
   "description": "Automated Fantasy FC live upgrade tracker for EA FC 26",
   "main": "scripts/generate-update.js",
   "scripts": {
-    "build": "cp data/fantasy-fc-tracker.html index.html",
     "seed": "node scripts/seed-players.js",
     "scrape": "node scripts/scrape-sofascore.js",
     "scrape:fbref": "node scripts/scrape-matches.js",

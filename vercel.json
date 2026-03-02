@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "buildCommand": "cp data/fantasy-fc-tracker.html index.html",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
