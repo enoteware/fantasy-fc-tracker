@@ -53,9 +53,20 @@ git push
 
 ## Option 3: Vercel (current)
 
-- **Repo:** [github.com/enoteware/fantasy-fc-tracker](https://github.com/enoteware/fantasy-fc-tracker) — connected to Vercel; pushes to `main` auto-deploy.
+- **Repo:** [github.com/enoteware/fantasy-fc-tracker](https://github.com/enoteware/fantasy-fc-tracker)
 - **Live URL:** https://fantasy-fc-tracker.vercel.app  
   Root `/` rewrites to `/index.html`; card images at `/cards/*.webp`.
+
+### If the Vercel project is not linked to Git
+
+If you have a Vercel project that was created without “Import Git Repository” (e.g. CLI or upload), it won’t auto-deploy on push. Link the repo:
+
+1. **Vercel Dashboard** → your project (e.g. **fantasy-fc-tracker**) → **Settings** → **Git**.
+2. Click **Connect Git Repository** (or **Edit** if something is already there).
+3. Choose **GitHub** and select **enoteware/fantasy-fc-tracker**. Authorize if prompted.
+4. Set **Production Branch** to `main`, then **Save**. Future pushes to `main` will trigger deploys.
+
+If you’d rather have one canonical linked project: create a **new** Vercel project via **Add New → Project → Import** from the repo; use that as the live app and delete or ignore the old unlinked project(s).
 
 **When you regenerate the tracker HTML:** copy to `index.html` so the root serves it:
 ```bash

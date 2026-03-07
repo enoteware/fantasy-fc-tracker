@@ -2,11 +2,15 @@
 
 Automated tracking system for EA FC 26 Fantasy FC live upgrades.
 
+**Live (this repo):** [fantasy-fc-tracker.vercel.app](https://fantasy-fc-tracker.vercel.app) — pushes to `main` auto-deploy via Vercel.  
+**Next.js app:** [fantasy-fc-tracker-next.vercel.app](https://fantasy-fc-tracker-next.vercel.app) — repo [enoteware/fantasy-fc-tracker-next](https://github.com/enoteware/fantasy-fc-tracker-next).
+
 ## 📚 Key Docs
 
 | Doc | What's in it |
 |-----|-------------|
 | **[DATA_SOURCES.md](DATA_SOURCES.md)** | FUT.GG API, SofaScore API, endpoints, credentials, gotchas — **read this first** |
+| [README-DEPLOY.md](README-DEPLOY.md) | Deploy options: Vercel (current), Cloudflare Pages, GitHub Pages — live URL and auto-deploy |
 | [UPGRADE_WORKFLOW.md](UPGRADE_WORKFLOW.md) | How to mark upgrades as applied |
 | [debug-api/README.md](debug-api/README.md) | Debug API (port 3999) and debug flag modal |
 | [docs/DEBUG_FLAG_MODAL.md](docs/DEBUG_FLAG_MODAL.md) | Summary of debug flag modal feature (what we built) |
