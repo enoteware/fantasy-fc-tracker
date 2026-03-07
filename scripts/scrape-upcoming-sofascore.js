@@ -191,8 +191,11 @@ async function main() {
         await insertClient.query(`
           INSERT INTO fantasy_fc_upcoming_fixtures
           (club, opponent, match_date, competition, home_away)
-          VALUES ($1, $2, $3, $4, $5)
-          ON CONFLICT DO NOTHING
+          SELECT $1, $2, $3, $4, $5
+          WHERE NOT EXISTS (
+            SELECT 1 FROM fantasy_fc_upcoming_fixtures
+            WHERE club = $1 AND match_date = $3 AND opponent = $2
+          )
         `, [club, opponent, matchDate, competition, homeAway]);
         
         totalFixtures++;

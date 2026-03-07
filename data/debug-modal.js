@@ -105,9 +105,13 @@
   submitBtn.addEventListener('click', function() {
     var body = collectFlagged();
     if (body.reports.length === 0) return;
+    var url = apiBase ? (apiBase.replace(/\/$/, '') + '/debug-reports') : null;
+    if (!url || (typeof location !== 'undefined' && location.protocol === 'file:')) {
+      setStatus('Debug API URL not set. Generate HTML with DEBUG_API_BASE and serve over HTTP (e.g. npx serve data/).', 'error');
+      return;
+    }
     setStatus('Sending...');
     submitBtn.disabled = true;
-    var url = apiBase ? apiBase + '/debug-reports' : 'debug-reports';
     fetch(url, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

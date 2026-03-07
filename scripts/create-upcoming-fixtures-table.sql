@@ -8,7 +8,8 @@ CREATE TABLE IF NOT EXISTS fantasy_fc_upcoming_fixtures (
   home_away VARCHAR(10),
   league VARCHAR(100),
   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+  updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  UNIQUE(club, match_date, opponent)
 );
 
 -- Index for quick club lookups
