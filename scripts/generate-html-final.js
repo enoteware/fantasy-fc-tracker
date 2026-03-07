@@ -57,6 +57,55 @@ function generateHexProgress(current, total) {
   return html;
 }
 
+function buildDebugPayload(player, cardImg, clubBadge) {
+  const clubDisplay = addWomensSuffix(player.club, player.league || '');
+  const hasGA = !player.is_hero && ((player.goals || 0) > 0 || (player.assists || 0) > 0 || (player.clean_sheets || 0) > 0);
+  const fields = [];
+
+  const push = (schemaGroup, fieldPath, value) => {
+    fields.push({
+      field_path: fieldPath,
+      value: value === undefined || value === null ? '' : String(value),
+      schema_group: schemaGroup
+    });
+  };
+
+  push('player', 'player.name', player.name);
+  push('player', 'player.club', player.club);
+  push('player', 'player.current_rating', player.current_rating);
+  push('player', 'player.position', player.position);
+  push('player', 'player.is_hero', player.is_hero);
+  push('player', 'player.league', player.league);
+  push('player', 'player.futbin_url', player.futbin_url);
+
+  push('club_stats', 'club_stats.matches_played', player.matches_played);
+  push('club_stats', 'club_stats.total_points', player.total_points);
+  push('club_stats', 'club_stats.goals_scored', player.goals_scored);
+  push('club_stats', 'club_stats.upgrade_6pts_earned', player.upgrade_6pts_earned);
+  push('club_stats', 'club_stats.upgrade_6pts_applied', player.upgrade_6pts_applied);
+  push('club_stats', 'club_stats.upgrade_10goals_earned', player.upgrade_10goals_earned);
+  push('club_stats', 'club_stats.upgrade_10goals_applied', player.upgrade_10goals_applied);
+
+  push('player_stats', 'player_stats.goals', player.goals);
+  push('player_stats', 'player_stats.assists', player.assists);
+  push('player_stats', 'player_stats.clean_sheets', player.clean_sheets);
+  push('player_stats', 'player_stats.upgrade_goal_assist_earned', player.upgrade_goal_assist_earned);
+  push('player_stats', 'player_stats.upgrade_goal_assist_applied', player.upgrade_goal_assist_applied);
+
+  push('asset_map', 'asset_map.card_image', cardImg ? '(present)' : '(missing)');
+  push('asset_map', 'asset_map.club_badge', clubBadge ? '(present)' : '(missing)');
+
+  push('derived', 'derived.club_display', clubDisplay);
+  push('derived', 'derived.total_points_display', (player.total_points || 0) + '/6');
+  push('derived', 'derived.goals_scored_display', (player.goals_scored || 0) + '/10');
+  push('derived', 'derived.has_ga', hasGA);
+  push('derived', 'derived.upgrade_6pts_status', player.upgrade_6pts_earned ? (player.upgrade_6pts_applied ? 'applied' : 'earned') : 'pending');
+  push('derived', 'derived.upgrade_10goals_status', player.upgrade_10goals_earned ? (player.upgrade_10goals_applied ? 'applied' : 'earned') : 'pending');
+  push('derived', 'derived.upgrade_ga_status', !player.is_hero && player.upgrade_goal_assist_earned ? (player.upgrade_goal_assist_applied ? 'applied' : 'earned') : (player.is_hero ? 'n/a' : 'pending'));
+
+  return { entity_type: 'player', entity_key: String(player.id), fields };
+}
+
 async function generateHTML() {
   const client = await pool.connect();
   
@@ -71,6 +120,7 @@ async function generateHTML() {
     
     const playersResult = await client.query(`
       SELECT 
+        p.id,
         p.name, p.club, p.current_rating, p.position, p.is_hero, p.league, p.futbin_url,
         cs.matches_played, cs.total_points, cs.goals_scored,
         cs.upgrade_6pts_earned, cs.upgrade_6pts_applied,
@@ -296,6 +346,106 @@ async function generateHTML() {
     .fixture-date {
       color: #888;
     }
+    .debug-trigger {
+      padding: 6px 12px;
+      font-size: 0.85em;
+      background: #2a2a2a;
+      color: #00e676;
+      border: 1px solid #00e676;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    .debug-trigger:hover {
+      background: #333;
+    }
+    .debug-modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.7);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .debug-modal-overlay.open { display: flex; }
+    .debug-modal {
+      background: #1a1a1a;
+      border: 2px solid #00e676;
+      border-radius: 12px;
+      max-width: 640px;
+      width: 100%;
+      max-height: 90vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .debug-modal h2 {
+      color: #00e676;
+      padding: 16px 20px;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 1.2em;
+    }
+    .debug-modal-content {
+      overflow: auto;
+      padding: 20px;
+      flex: 1;
+    }
+    .debug-modal-section {
+      margin-bottom: 20px;
+    }
+    .debug-modal-section h3 {
+      color: #888;
+      font-size: 0.9em;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+    }
+    .debug-field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr auto auto;
+      gap: 12px;
+      align-items: start;
+      padding: 8px 0;
+      border-bottom: 1px solid #2a2a2a;
+      font-size: 0.9em;
+    }
+    .debug-field-row label { margin-right: 8px; }
+    .debug-field-row .value { color: #00e676; word-break: break-all; }
+    .debug-field-row input[type="checkbox"] { margin-top: 4px; }
+    .debug-field-row .comment-wrap { grid-column: 1 / -1; }
+    .debug-field-row .comment-wrap input {
+      width: 100%;
+      padding: 6px 10px;
+      background: #0f0f0f;
+      border: 1px solid #2a2a2a;
+      border-radius: 6px;
+      color: #fff;
+      margin-top: 4px;
+    }
+    .debug-modal-actions {
+      padding: 16px 20px;
+      border-top: 1px solid #2a2a2a;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .debug-modal-actions .status { font-size: 0.9em; color: #888; }
+    .debug-modal-actions .status.success { color: #00e676; }
+    .debug-modal-actions .status.error { color: #f44336; }
+    .debug-modal-actions button {
+      padding: 8px 16px;
+      background: #00e676;
+      color: #0f0f0f;
+      border: none;
+      border-radius: 6px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .debug-modal-actions button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .debug-modal-actions .close-btn {
+      background: #2a2a2a;
+      color: #fff;
+    }
   </style>
 </head>
 <body>
@@ -304,13 +454,17 @@ async function generateHTML() {
       <h1>⚽ Fantasy FC Live Tracker</h1>
       <p>${dateStr} at ${timeStr}</p>
     </div>`;
-    
+
+    const debugPayloads = {};
     for (const player of playersResult.rows) {
       const clubDisplay = addWomensSuffix(player.club, player.league);
       const heroIcon = player.is_hero ? ' ⭐' : '';
       const cardImg = getPlayerImage(player.name);
       
       if (!cardImg) continue; // Skip if no card image
+
+      const payload = buildDebugPayload(player, cardImg, getClubBadge(player.club));
+      debugPayloads[payload.entity_key] = payload;
       
       html += `
     <div class="player-card">
@@ -328,7 +482,10 @@ async function generateHTML() {
             ${clubDisplay}
           </div>
         </div>
-        <div class="player-rating">${player.current_rating} ${player.position}</div>
+        <div style="display: flex; align-items: center; gap: 10px; margin-left: auto;">
+          <button type="button" class="debug-trigger" data-entity-key="${payload.entity_key}" title="Debug schema and values">Debug</button>
+          <div class="player-rating">${player.current_rating} ${player.position}</div>
+        </div>
       </div>
       
       <div class="upgrade-card">
@@ -426,9 +583,29 @@ async function generateHTML() {
       </div>`;
     }
     
+    const debugPayloadsJson = JSON.stringify(debugPayloads).replace(/<\/script>/gi, '<\\/script>');
+    const debugApiBase = (process.env.DEBUG_API_BASE || '').replace(/\/$/, '');
     html += `
     </div>
   </div>
+  <div id="debug-modal-overlay" class="debug-modal-overlay" aria-hidden="true">
+    <div class="debug-modal" role="dialog" aria-labelledby="debug-modal-title">
+      <h2 id="debug-modal-title">Debug: schema and values</h2>
+      <div class="debug-modal-content" id="debug-modal-content"></div>
+      <div class="debug-modal-actions">
+        <span class="status" id="debug-modal-status"></span>
+        <div>
+          <button type="button" class="close-btn" id="debug-modal-close">Close</button>
+          <button type="button" id="debug-modal-submit" disabled>Submit flagged</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    window.__DEBUG_PAYLOADS__ = ${debugPayloadsJson};
+    window.__DEBUG_API_BASE__ = ${JSON.stringify(debugApiBase)};
+  </script>
+  <script src="debug-modal.js"></script>
 </body>
 </html>`;
     

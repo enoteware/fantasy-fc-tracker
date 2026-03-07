@@ -4,12 +4,17 @@
   "description": "Automated Fantasy FC live upgrade tracker for EA FC 26",
   "main": "scripts/generate-update.js",
   "scripts": {
+    "dev": "node scripts/migrate-debug-reports.js && node debug-api/server.js",
     "seed": "node scripts/seed-players.js",
     "scrape": "node scripts/scrape-sofascore.js",
     "scrape:fbref": "node scripts/scrape-matches.js",
     "update": "node scripts/generate-update.js",
     "full": "./update.sh",
-    "scrape:futgg": "node scripts/scrape-futgg-fantasy-fc.js"
+    "scrape:futgg": "node scripts/scrape-futgg-fantasy-fc.js",
+    "generate:html": "node scripts/generate-html-final.js",
+    "debug-api": "node scripts/migrate-debug-reports.js && node debug-api/server.js",
+    "debug-api:server": "node debug-api/server.js",
+    "list-debug-reports": "node scripts/list-debug-reports.js"
   },
   "dependencies": {
     "axios": "^1.13.6",
