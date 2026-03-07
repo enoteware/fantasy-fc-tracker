@@ -2,6 +2,14 @@
 
 Automated tracking system for EA FC 26 Fantasy FC live upgrades.
 
+## 📚 Key Docs
+
+| Doc | What's in it |
+|-----|-------------|
+| **[DATA_SOURCES.md](DATA_SOURCES.md)** | FUT.GG API, SofaScore API, endpoints, credentials, gotchas — **read this first** |
+| [UPGRADE_WORKFLOW.md](UPGRADE_WORKFLOW.md) | How to mark upgrades as applied |
+| [HANDOFF-2026-03-06.md](memory/HANDOFF-2026-03-06.md) | Latest agent handoff with current state |
+
 ## What It Does
 
 - **Scrapes match results** from FBref for all Fantasy FC clubs
