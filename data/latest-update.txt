@@ -6,51 +6,63 @@
 
 **João Félix** • 91 CAM
 └ Al-Nassr • 9/6 pts • 12/10 goals
-└ 🎯 +1 OVR 🎯 99 stat
-
-**Bruno Fernandes** • 92 CM
-└ Manchester United • 6/6 pts • 3/10 goals
-└ 🎯 +1 OVR
+└ 🎯 +1 OVR 🎯 99 stat 🎯 PS+
 
 **Yaya Touré** ⭐ • 92 CM
 └ Manchester City • 6/6 pts • 3/10 goals
-└ 🎯 +1 OVR
+└ 🎯 +1 OVR 🎯 PS+
+
+**Bruno Fernandes** • 92 CM
+└ Manchester United • 6/6 pts • 3/10 goals
+└ 🎯 +1 OVR 🎯 PS+
 
 **Salma Paralluelo** ⭐ • 91 LW
 └ Barcelona • 6/6 pts • 7/10 goals
-└ 🎯 +1 OVR
+└ 🎯 +1 OVR 🎯 PS+
 
 **Robert Lewandowski** • 91 ST
 └ Barcelona • 6/6 pts • 7/10 goals
-└ 🎯 +1 OVR
+└ 🎯 +1 OVR 🎯 PS+
+
+**Antoine Semenyo** • 90 RW
+└ Manchester City • 6/6 pts • 3/10 goals
+└ 🎯 +1 OVR 🎯 PS+
+
+**Francisco Moura** • 88 LB
+└ FC Porto • 6/6 pts • 4/10 goals
+└ 🎯 +1 OVR 🎯 PS+
+
+**Keven Schlotterbeck** • 88 CB
+└ FC Augsburg • 6/6 pts • 5/10 goals
+└ 🎯 +1 OVR 🎯 PS+
+
+**Cole Palmer** • 92 CAM
+└ Chelsea • 1/6 pts • 2/10 goals
+└ 🎯 PS+
+
+**Moussa Diaby** • 90 RW
+└ Al-Ittihad • 5/6 pts • 3/10 goals
+└ 🎯 PS+
+
+**Unai Simón** • 90 GK
+└ Athletic Club • 1/6 pts • 1/10 goals
+└ 🎯 PS+
 
 **Paulo Futre** ⭐ • 90 LW
 └ FC Porto • 6/6 pts • 4/10 goals
 └ 🎯 +1 OVR
 
-**Antoine Semenyo** • 90 RW
-└ Manchester City • 6/6 pts • 3/10 goals
-└ 🎯 +1 OVR
+**Douglas Luiz** • 90 CDM
+└ Aston Villa • 1/6 pts • 1/10 goals
+└ 🎯 PS+
 
-**Keven Schlotterbeck** • 88 CB
-└ FC Augsburg • 6/6 pts • 5/10 goals
-└ 🎯 +1 OVR
+**Noa Lang** • 89 LW
+└ Galatasaray • 3/6 pts • 3/10 goals
+└ 🎯 PS+
 
-**Francisco Moura** • 88 LB
-└ FC Porto • 6/6 pts • 4/10 goals
-└ 🎯 +1 OVR
-
-**Tomáš Rosický** ⭐ • 88 CAM
-└ Arsenal • 6/6 pts • 6/10 goals
-└ 🎯 +1 OVR
-
-## 📈 Building Progress
-
-**Moussa Diaby** • 90 RW • Al-Ittihad
-└ 5/6 pts • 3/10 goals
-
-**Deniz Undav** • 90 ST • VfB Stuttgart
-└ 4/6 pts • 7/10 goals
+**Giovane** • 88 LW
+└ Napoli • 3/6 pts • 3/10 goals
+└ 🎯 PS+
 
 
 ---

@@ -310,7 +310,25 @@ PGPASSWORD='npg_O5eDH2CKsvrY' psql \
 
 ---
 
-## 6. Auto-Update Schedule
+## 6. Debug Reports (tracker UI → agent fix)
+
+Field-level "flag as wrong" reports from the generated tracker are stored in Postgres for agent review.
+
+**Table:** `fantasy_fc_debug_reports`  
+Columns: `id`, `entity_type`, `entity_key`, `field_path`, `rendered_value`, `schema_group`, `comment`, `status`, `page_context`, `created_at`, `updated_at`.
+
+**API (standalone):** `npm run debug-api` (port 3999).
+
+- **POST /debug-reports** — Body: `{ entity_type, entity_key, reports: [ { field_path, rendered_value, schema_group, comment? } ], page_context? }`. Inserts one row per report with `status = 'open'`.
+- **GET /debug-reports?status=open&entity_type=player** — Returns `{ reports: [...] }`.
+
+**Agent read path:** Run `npm run list-debug-reports` (or `node scripts/list-debug-reports.js [--status=open] [--entity-type=player]`). Output is grouped by entity and lists each flagged field, rendered value, and comment so an agent can trace and fix the upstream mapping (seed, scraper, or generator).
+
+**Schema groups** in payloads: `player`, `club_stats`, `player_stats`, `asset_map`, `derived`. Map these to `fantasy_fc_players`, `fantasy_fc_club_stats`, `fantasy_fc_player_stats`, card/badge JSON, or derived display logic in `scripts/generate-html-final.js`.
+
+---
+
+## 7. Auto-Update Schedule
 
 | Time (PT) | Time (UTC) | Action |
 |-----------|-----------|--------|
@@ -323,7 +341,7 @@ PGPASSWORD='npg_O5eDH2CKsvrY' psql \
 
 ---
 
-## 7. Daily SofaScore Budget (2000 req/day PRO)
+## 8. Daily SofaScore Budget (2000 req/day PRO)
 
 | Task | Requests | Frequency |
 |------|----------|-----------|

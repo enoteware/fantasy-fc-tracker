@@ -8,6 +8,8 @@ Automated tracking system for EA FC 26 Fantasy FC live upgrades.
 |-----|-------------|
 | **[DATA_SOURCES.md](DATA_SOURCES.md)** | FUT.GG API, SofaScore API, endpoints, credentials, gotchas — **read this first** |
 | [UPGRADE_WORKFLOW.md](UPGRADE_WORKFLOW.md) | How to mark upgrades as applied |
+| [debug-api/README.md](debug-api/README.md) | Debug API (port 3999) and debug flag modal |
+| [docs/DEBUG_FLAG_MODAL.md](docs/DEBUG_FLAG_MODAL.md) | Summary of debug flag modal feature (what we built) |
 | [HANDOFF-2026-03-06.md](memory/HANDOFF-2026-03-06.md) | Latest agent handoff with current state |
 
 ## What It Does
@@ -51,6 +53,48 @@ POSTGRES_PASSWORD=your_password
 cd ~/code/fc_planner/fantasy-fc-tracker
 npm install
 ```
+
+## Debug Flag Modal (data/schema review + flag as wrong)
+
+We added a **debug modal** on each player card in the generated tracker so you can:
+
+- **See all mapped data and schema** for that player (player row, club stats, player stats, asset map, derived values).
+- **Flag fields as wrong** with a checkbox and optional comment.
+- **Submit** to store reports in Postgres so an agent (or you) can read and fix the pipeline.
+
+### Run the stack
+
+1. **Start the debug API** (migration + server on port **3999**, bound to all interfaces so you can use the Mini’s network IP):
+
+   ```bash
+   npm run dev
+   ```
+
+   Server listens on `0.0.0.0:3999`. On startup it prints:
+   - `http://127.0.0.1:3999` (local)
+   - `http://<your-mini-ip>:3999` (network — use this from other devices).
+
+2. **Generate the tracker HTML** (optional: set `DEBUG_API_BASE` if the page is opened from another machine):
+
+   ```bash
+   npm run generate:html
+   # Or with explicit API URL for network access:
+   DEBUG_API_BASE=http://192.168.x.x:3999 npm run generate:html
+   ```
+
+   **Example (Mini on LAN):** If your Mini is at `192.168.68.75`, run `DEBUG_API_BASE=http://192.168.68.75:3999 npm run generate:html`. The server startup log prints the Mini’s IP so you can copy it.
+
+3. **Open** `data/fantasy-fc-tracker.html`, click **Debug** on any player card. In the modal you’ll see schema groups and values; check **Wrong** and add a comment on bad fields, then **Submit flagged**.
+
+4. **List open reports** (for you or an agent to fix):
+
+   ```bash
+   npm run list-debug-reports
+   ```
+
+See [DATA_SOURCES.md § Debug Reports](DATA_SOURCES.md) and [debug-api/README.md](debug-api/README.md) for API and schema details.
+
+---
 
 ## Usage
 
@@ -104,6 +148,7 @@ Or use OpenClaw cron:
 - `fantasy_fc_matches` - Raw match results
 - `fantasy_fc_player_matches` - Per-match player stats
 - `fantasy_fc_upgrades` - Upgrade log
+- `fantasy_fc_debug_reports` - Field-level "flag as wrong" reports from the tracker UI (for agent fix)
 
 ### Views
 

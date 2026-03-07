@@ -137,6 +137,21 @@ CREATE TABLE IF NOT EXISTS fantasy_fc_upgrades (
   UNIQUE(player_id, upgrade_type, tier)
 );
 
+-- Debug reports: Field-level flags from the tracker UI for agent review
+CREATE TABLE IF NOT EXISTS fantasy_fc_debug_reports (
+  id SERIAL PRIMARY KEY,
+  entity_type VARCHAR(50) NOT NULL DEFAULT 'player',
+  entity_key VARCHAR(255) NOT NULL,
+  field_path VARCHAR(255) NOT NULL,
+  rendered_value TEXT,
+  schema_group VARCHAR(50) NOT NULL,
+  comment TEXT,
+  status VARCHAR(20) NOT NULL DEFAULT 'open',
+  page_context JSONB,
+  created_at TIMESTAMP DEFAULT NOW(),
+  updated_at TIMESTAMP DEFAULT NOW()
+);
+
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_players_club ON fantasy_fc_players(club);
 CREATE INDEX IF NOT EXISTS idx_players_rating ON fantasy_fc_players(current_rating);
@@ -144,6 +159,8 @@ CREATE INDEX IF NOT EXISTS idx_club_stats_club ON fantasy_fc_club_stats(club);
 CREATE INDEX IF NOT EXISTS idx_matches_club ON fantasy_fc_matches(club);
 CREATE INDEX IF NOT EXISTS idx_matches_date ON fantasy_fc_matches(match_date);
 CREATE INDEX IF NOT EXISTS idx_upgrades_player ON fantasy_fc_upgrades(player_id);
+CREATE INDEX IF NOT EXISTS idx_debug_reports_status ON fantasy_fc_debug_reports(status);
+CREATE INDEX IF NOT EXISTS idx_debug_reports_entity ON fantasy_fc_debug_reports(entity_type, entity_key);
 
 -- Views for easy querying
 
